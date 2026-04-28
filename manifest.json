@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Copy DOM Selector",
+  "version": "1.0",
+  "description": "Click an element to copy its CSS selector path to the clipboard",
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "action": {
+    "default_icon": {
+      "128": "icon.png"
+    },
+    "default_title": "Pick an element to copy its selector"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
