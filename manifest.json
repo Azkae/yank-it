@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Copy DOM Selector",
+  "name": "Yank It",
   "version": "1.0",
   "description": "Click an element to copy its CSS selector path to the clipboard",
   "permissions": ["activeTab", "scripting", "clipboardWrite"],

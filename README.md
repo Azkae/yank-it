@@ -1,4 +1,4 @@
-# Yank it
+# Yank It
 
 A small chrome extension to copy a path an dom element.
 For example:
