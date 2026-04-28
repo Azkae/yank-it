@@ -2,7 +2,13 @@
   // De-duplication guard: if picker is already active, cancel it
   if (window.__domPickerActive) {
     window.__domPickerActive = false;
-    cleanup();
+    const existing = document.getElementById('__domPickerOverlay');
+    if (existing) existing.remove();
+    document.body.style.cursor = '';
+    document.removeEventListener('mousemove', onMousemove);
+    document.removeEventListener('click', onClick, true);
+    document.removeEventListener('keydown', onKeydown, true);
+    chrome.runtime.sendMessage({ type: 'picker-done' });
     return;
   }
   window.__domPickerActive = true;
@@ -100,6 +106,7 @@
     overlay.remove();
     document.body.style.cursor = prevCursor;
     window.__domPickerActive = false;
+    chrome.runtime.sendMessage({ type: 'picker-done' });
   }
 
   // --- Event handlers ---
