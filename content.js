@@ -30,13 +30,12 @@
   function buildSelector(el) {
     const parts = [];
     let current = el;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       if (!current || current === document.body || current === document.documentElement) break;
       const tag = current.tagName.toLowerCase();
-      const firstClass = current.classList.length > 0
-        ? '.' + CSS.escape(current.classList[0])
-        : '';
-      parts.unshift(tag + firstClass);
+      const rawClass = current.classList[0] || '';
+      const cleanClass = rawClass ? '.' + rawClass.replace(/_[a-z0-9]+_\d+$/i, '').replace(/^_/, '') : '';
+      parts.unshift(tag + cleanClass);
       current = current.parentElement;
     }
     return parts.join(' > ');
@@ -113,7 +112,7 @@
     e.stopPropagation();
     const selector = buildSelector(e.target);
     cleanup();
-    navigator.clipboard.writeText(selector)
+    navigator.clipboard.writeText('`' + selector + '`')
       .then(() => showToast('Copied: ' + selector))
       .catch(() => showToast('Failed to copy to clipboard'));
   }
