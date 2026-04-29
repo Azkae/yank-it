@@ -1,6 +1,6 @@
 # Yank It
 
-A small Chrome extension to copy a path to a DOM element.
+A small Chrome extension to copy the path to a DOM element.
 For example:
 
 `section.page > div.taskList > div.taskRow > p.taskSummary`
