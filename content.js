@@ -40,7 +40,8 @@
       if (!current || current === document.body || current === document.documentElement) break;
       const tag = current.tagName.toLowerCase();
       const rawClass = current.classList[0] || '';
-      const cleanClass = rawClass ? '.' + rawClass.replace(/_[a-z0-9]+_\d+$/i, '').replace(/^_/, '') : '';
+      const cssModuleClass = rawClass.match(/^_(.+)_[a-z0-9]{5,}_\d+$/i);
+      const cleanClass = rawClass ? '.' + (cssModuleClass ? cssModuleClass[1] : rawClass) : '';
       parts.unshift(tag + cleanClass);
       current = current.parentElement;
     }
