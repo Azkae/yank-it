@@ -15,4 +15,4 @@ Useful for pasting to a llm.
 
 ## Security
 
-IMO, chrome extension are a security nightmare, this extension code is very small, in pure js and with no dependencies. You can easily verify the code.
+IMO, chrome extensions are a security nightmare, this extension code is very small, in pure js and with no dependencies. You can easily verify the code.
