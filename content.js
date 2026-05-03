@@ -130,7 +130,7 @@
     let prev;
     return parts.map((part, i) => {
       const comp = components[i];
-      const prefix = comp && comp !== prev ? comp + ':' : '';
+      const prefix = comp && comp !== prev ? `[${comp}] ` : '';
       prev = comp;
       return prefix + part;
     }).join(' > ');

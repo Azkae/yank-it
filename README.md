@@ -3,7 +3,7 @@
 A small Chrome extension to copy the path to a DOM element.
 For example:
 
-`Page:section.page > div.taskList > Task:div.taskRow > p.taskSummary`
+`[Page] section.page > div.taskList > [Task] div.taskRow > p.taskSummary`
 
 Useful for pasting to an LLM.
 
