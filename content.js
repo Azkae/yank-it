@@ -32,9 +32,9 @@
   const prevCursor = document.body.style.cursor;
   document.body.style.cursor = 'crosshair';
 
-  // --- Selector builder ---
-  function buildSelector(el) {
-    const parts = [];
+  // --- Element path builder ---
+  function getElementPath(el) {
+    const parts = [], els = [];
     let current = el;
     for (let i = 0; i < 4; i++) {
       if (!current || current === document.body || current === document.documentElement) break;
@@ -43,9 +43,20 @@
       const cssModuleClass = rawClass.match(/^_(.+)_[a-z0-9]{5,}_\d+$/i);
       const cleanClass = rawClass ? '.' + (cssModuleClass ? cssModuleClass[1] : rawClass) : '';
       parts.unshift(tag + cleanClass);
+      els.unshift(current);
       current = current.parentElement;
     }
-    return parts.join(' > ');
+    return { parts, els };
+  }
+
+  // --- React component probe (batched) ---
+  function getReactComponents(els) {
+    const ids = els.map((_, i) => '__react_probe_' + Date.now() + '_' + i);
+    els.forEach((el, i) => el.setAttribute('data-probe', ids[i]));
+    const cleanup = () => els.forEach(el => el.removeAttribute('data-probe'));
+    return chrome.runtime.sendMessage({ type: 'get-react-components', probeIds: ids })
+      .then(names => { cleanup(); return names || ids.map(() => null); })
+      .catch(() => { cleanup(); return ids.map(() => null); });
   }
 
   // --- Overlay positioning ---
@@ -115,13 +126,25 @@
     positionOverlay(e.target);
   }
 
-  function onClick(e) {
+  function buildText(parts, components) {
+    let prev;
+    return parts.map((part, i) => {
+      const comp = components[i];
+      const prefix = comp && comp !== prev ? comp + ':' : '';
+      prev = comp;
+      return prefix + part;
+    }).join(' > ');
+  }
+
+  async function onClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    const selector = buildSelector(e.target);
+    const { parts, els } = getElementPath(e.target);
+    const components = await getReactComponents(els);
+    const text = buildText(parts, components);
     cleanup();
-    navigator.clipboard.writeText('`' + selector + '`')
-      .then(() => showToast('Copied: ' + selector))
+    navigator.clipboard.writeText('`' + text + '`')
+      .then(() => showToast('Copied: ' + text))
       .catch(() => showToast('Failed to copy to clipboard'));
   }
 
