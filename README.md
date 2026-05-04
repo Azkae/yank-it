@@ -17,7 +17,7 @@ Useful for pasting to an LLM.
 
 ### Firefox
 
-1. Go to `about:debugging` in the address bar
+1. Open `about:debugging`
 2. Click **This Firefox**
 3. Click **Load Temporary Add-on...**
 4. Select `manifest.json`
