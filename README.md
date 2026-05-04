@@ -1,17 +1,31 @@
 # Yank It
 
-A small Chrome extension to copy the path to a DOM element.
+A small Chrome & Firefox extension to copy the path to a DOM element.
 For example:
 
 `[Page] section.page > div.taskList > [Task] div.taskRow > p.taskSummary`
 
 Useful for pasting to an LLM.
 
+## Install
+### Chrome
+
+1. Open `chrome://extensions`
+2. Enable Developer mode
+3. Click **Load unpacked**
+4. Select the project directory
+
+### Firefox
+
+1. Go to `about:debugging` in the address bar
+2. Click **This Firefox**
+3. Click **Load Temporary Add-on...**
+4. Select `manifest.json`
+
 ## How to use
 
-1. Open `chrome://extensions`, enable Developer mode, click "Load unpacked", select the project directory
-2. Click the extension icon → hover over elements → blue highlight overlay tracks elements
-3. Click an element → path copied to clipboard
+1. Click the extension icon → hover over elements
+2. Click an element → path copied to clipboard
 
 ## Security
 

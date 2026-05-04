@@ -11,6 +11,7 @@
     "default_title": "Pick an element to copy its selector"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
   }
 }
