@@ -15,7 +15,7 @@ Useful for pasting to an LLM.
 3. Click **Load unpacked**
 4. Select the project directory
 
-Ignore the warning about `background.scripts`; this is referenced in the manifest to support Firefox.
+Ignore the warning about `background.scripts`; This is required to support Firefox.
 
 ### Firefox
 
