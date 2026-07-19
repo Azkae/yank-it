@@ -1,0 +1,47 @@
+[
+  {
+    "description": "CSS modules className",
+    "selector": "[Task] div.taskRow > p.taskSummary",
+    "expected": ["src/components/Task.tsx:6"]
+  },
+  {
+    "description": "multiline JSX - className on separate line from tag",
+    "selector": "[TaskMultiline] div.taskRow > p.taskSummary",
+    "expected": ["src/components/TaskMultiline.tsx:4"]
+  },
+  {
+    "description": "template literal CSS modules across many attribute lines",
+    "selector": "[SegmentedControl] div.segmented > button.segment",
+    "expected": ["src/components/SegmentedControl.tsx:11"]
+  },
+  {
+    "description": "multiple component ancestors - uses nearest one",
+    "selector": "[Page] section.page > div.taskList > [Task] div.taskRow > p.taskSummary",
+    "expected": ["src/components/Task.tsx:6"]
+  },
+  {
+    "description": "inline className, deeply nested elements",
+    "selector": "[Hero] div.heroInner > div.heroCopy > h1.headline > span.highlight",
+    "expected": ["src/components/Hero.tsx:6"]
+  },
+  {
+    "description": "no component ancestor - searches all JSX files",
+    "selector": "span.highlight",
+    "expected": ["src/components/Hero.tsx:6"]
+  },
+  {
+    "description": "backtick-wrapped selector",
+    "selector": "`[Hero] div.heroInner > div.heroCopy > h1.headline > span.highlight`",
+    "expected": ["src/components/Hero.tsx:6"]
+  },
+  {
+    "description": "element not found - falls back to parent element",
+    "selector": "[Task] div.taskRow > p.nonExistent",
+    "expected": ["src/components/Task.tsx:5"]
+  },
+  {
+    "description": "no element found at any level - falls back to component definition",
+    "selector": "[Task] div.nonExistent > p.nonExistent",
+    "expected": ["src/components/Task.tsx:3"]
+  }
+]

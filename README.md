@@ -13,7 +13,7 @@ Useful for pasting to an LLM.
 1. Open `chrome://extensions`
 2. Enable Developer mode
 3. Click **Load unpacked**
-4. Select the project directory
+4. Select the `extension` directory
 
 Ignore the warning about `background.scripts`; This is required to support Firefox.
 
@@ -22,7 +22,7 @@ Ignore the warning about `background.scripts`; This is required to support Firef
 1. Open `about:debugging`
 2. Click **This Firefox**
 3. Click **Load Temporary Add-on...**
-4. Select `manifest.json`
+4. Select `extension/manifest.json`
 
 ## How to use
 
