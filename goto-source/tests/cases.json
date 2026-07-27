@@ -43,5 +43,33 @@
     "description": "no element found at any level - falls back to component definition",
     "selector": "[Task] div.nonExistent > p.nonExistent",
     "expected": ["src/components/Task.tsx:3"]
+  },
+  {
+    "description": "--all returns matches at every level deepest first",
+    "selector": "[Task] div.taskRow > p.taskSummary",
+    "flags": ["--all"],
+    "expected": ["src/components/Task.tsx:6", "src/components/Task.tsx:5"]
+  },
+  {
+    "description": "--all with multiple components returns every level deepest first",
+    "selector": "[StudyStepsList] section.tasksCol > div.langSelector > div.langDropdownWrap > [Button] button.button",
+    "flags": ["--all"],
+    "expected": [
+      "src/components/Button.tsx:5",
+      "src/components/StudyStepsList.tsx:8",
+      "src/components/StudyStepsList.tsx:7",
+      "src/components/StudyStepsList.tsx:6"
+    ]
+  },
+  {
+    "description": "--all crosses component boundaries",
+    "selector": "[Page] section.page > div.taskList > [Task] div.taskRow > p.taskSummary",
+    "flags": ["--all"],
+    "expected": [
+      "src/components/Task.tsx:6",
+      "src/components/Task.tsx:5",
+      "src/components/Page.tsx:6",
+      "src/components/Page.tsx:5"
+    ]
   }
 ]

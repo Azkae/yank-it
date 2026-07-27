@@ -17,8 +17,9 @@ def abs_expected(relative: str) -> str:
 
 @pytest.mark.parametrize("case", CASES, ids=[c["description"] for c in CASES])
 def test_goto_source(case):
-    result = CliRunner().invoke(main, [case["selector"], str(FIXTURE_DIR)])
+    args = case.get("flags", []) + [case["selector"], str(FIXTURE_DIR)]
+    result = CliRunner().invoke(main, args)
     assert result.exit_code == 0, f"stderr: {result.output}"
-    actual = sorted(result.output.strip().splitlines())
-    expected = sorted(abs_expected(e) for e in case["expected"])
+    actual = result.output.strip().splitlines()
+    expected = [abs_expected(e) for e in case["expected"]]
     assert actual == expected

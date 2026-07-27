@@ -4,12 +4,17 @@
   "Path to the goto-source executable."
   :type 'string)
 
+(defcustom goto-source-project-directory nil
+  "Path default project directory, using the current project if nil"
+  :type 'string)
+
 (defun goto-source--run (selector)
-  (let* ((root (if (and (fboundp 'project-current) (project-current))
-                   (project-root (project-current))
-                 default-directory))
+  (let* ((root (or goto-source-project-directory
+                   (if (and (fboundp 'project-current) (project-current))
+                       (project-root (project-current))
+                     default-directory)))
          (output (shell-command-to-string
-                  (format "%s %s %s"
+                  (format "%s --all %s %s"
                           goto-source-executable
                           (shell-quote-argument selector)
                           (shell-quote-argument (expand-file-name root)))))
@@ -47,6 +52,22 @@
    (string-trim (or (and (display-graphic-p) (gui-get-selection 'CLIPBOARD))
                     (current-kill 0 t)
                     (user-error "Clipboard is empty")))))
+
+(use-package simple-httpd)
+(require 'simple-httpd)
+(setq httpd-serve-files nil)
+(setq httpd-port 30142)
+
+(httpd-servlet* open-ref text/plain (ref)
+  (message "Finding source..")
+  (select-frame-set-input-focus (selected-frame))
+  (condition-case err
+      (goto-source--visit ref)
+    (error (message "goto-source: %s" (error-message-string err)))))
+
+(httpd-start)
+
+(setq goto-source-project-directory "~/work/candid-website/")
 
 (provide 'goto-source)
 ;;; goto-source.el ends here

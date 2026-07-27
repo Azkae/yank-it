@@ -4,6 +4,7 @@
   "version": "1.0",
   "description": "Click an element to copy its CSS selector path to the clipboard",
   "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "host_permissions": ["http://localhost:30142/*"],
   "action": {
     "default_icon": {
       "128": "icon.png"

@@ -143,9 +143,15 @@
     const components = await getReactComponents(els);
     const text = buildText(parts, components);
     cleanup();
-    navigator.clipboard.writeText('`' + text + '`')
-      .then(() => showToast('Copied: ' + text))
-      .catch(() => showToast('Failed to copy to clipboard'));
+    if (e.metaKey) {
+      fetch('http://localhost:30142/open-ref?ref=' + encodeURIComponent(text))
+        .then(r => showToast(r.ok ? 'Opened: ' + text : 'Server error ' + r.status))
+        .catch(() => showToast('Could not reach localhost:30142'));
+    } else {
+      navigator.clipboard.writeText('`' + text + '`')
+        .then(() => showToast('Copied: ' + text))
+        .catch(() => showToast('Failed to copy to clipboard'));
+    }
   }
 
   function onKeydown(e) {
