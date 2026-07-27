@@ -127,7 +127,7 @@ def find_element_in_files(
     "--all",
     "all_levels",
     is_flag=True,
-    help="Return matches at every level of the path, deepest first.",
+    help="Return matches at every level of the path, deepest first, as ELEMENT<TAB>FILE:LINE.",
 )
 def main(selector: str, project_root: str, all_levels: bool):
     """Find the source location of a JSX element from a chrome-copy-dom selector path."""
@@ -156,17 +156,27 @@ def main(selector: str, project_root: str, all_levels: bool):
         return files_cache[component]
 
     matches: list[str] = []
+    seen: set[str] = set()
     for level in reversed(levels):
         found = find_element_in_files(
             files_for(level["component"]), level["tag"], level["classes"], root
         )
-        matches += [m for m in found if m not in matches]
-        if matches and not all_levels:
+        new = [m for m in found if m not in seen]
+        seen.update(new)
+        if all_levels:
+            element = ".".join([level["tag"], *level["classes"]])
+            label = f"[{level['component']}] {element}" if level["component"] else element
+            matches += [f"{label}\t{m}" for m in new]
+        elif new:
+            matches = new
             break
 
     # Fall back to the target's nearest component definition.
     if not matches and levels[-1]["component"]:
-        matches = find_component_definition(root, levels[-1]["component"])
+        component = levels[-1]["component"]
+        matches = find_component_definition(root, component)
+        if all_levels:
+            matches = [f"[{component}]\t{m}" for m in matches]
 
     if not matches:
         click.echo("No matches found.", err=True)

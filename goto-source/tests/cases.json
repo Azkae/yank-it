@@ -48,17 +48,20 @@
     "description": "--all returns matches at every level deepest first",
     "selector": "[Task] div.taskRow > p.taskSummary",
     "flags": ["--all"],
-    "expected": ["src/components/Task.tsx:6", "src/components/Task.tsx:5"]
+    "expected": [
+      "[Task] p.taskSummary\tsrc/components/Task.tsx:6",
+      "[Task] div.taskRow\tsrc/components/Task.tsx:5"
+    ]
   },
   {
     "description": "--all with multiple components returns every level deepest first",
     "selector": "[StudyStepsList] section.tasksCol > div.langSelector > div.langDropdownWrap > [Button] button.button",
     "flags": ["--all"],
     "expected": [
-      "src/components/Button.tsx:5",
-      "src/components/StudyStepsList.tsx:8",
-      "src/components/StudyStepsList.tsx:7",
-      "src/components/StudyStepsList.tsx:6"
+      "[Button] button.button\tsrc/components/Button.tsx:5",
+      "[StudyStepsList] div.langDropdownWrap\tsrc/components/StudyStepsList.tsx:8",
+      "[StudyStepsList] div.langSelector\tsrc/components/StudyStepsList.tsx:7",
+      "[StudyStepsList] section.tasksCol\tsrc/components/StudyStepsList.tsx:6"
     ]
   },
   {
@@ -66,10 +69,10 @@
     "selector": "[Page] section.page > div.taskList > [Task] div.taskRow > p.taskSummary",
     "flags": ["--all"],
     "expected": [
-      "src/components/Task.tsx:6",
-      "src/components/Task.tsx:5",
-      "src/components/Page.tsx:6",
-      "src/components/Page.tsx:5"
+      "[Task] p.taskSummary\tsrc/components/Task.tsx:6",
+      "[Task] div.taskRow\tsrc/components/Task.tsx:5",
+      "[Page] div.taskList\tsrc/components/Page.tsx:6",
+      "[Page] section.page\tsrc/components/Page.tsx:5"
     ]
   }
 ]

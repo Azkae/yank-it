@@ -11,8 +11,9 @@ CASES = json.loads((Path(__file__).parent / "cases.json").read_text())
 
 
 def abs_expected(relative: str) -> str:
-    path, line = relative.rsplit(":", 1)
-    return f"{(FIXTURE_DIR / path).resolve()}:{line}"
+    label, sep, location = relative.rpartition("\t")
+    path, line = location.rsplit(":", 1)
+    return f"{label}{sep}{(FIXTURE_DIR / path).resolve()}:{line}"
 
 
 @pytest.mark.parametrize("case", CASES, ids=[c["description"] for c in CASES])
