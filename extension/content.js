@@ -146,7 +146,6 @@
     if (e.metaKey) {
       fetch('http://localhost:30142/open-ref?ref=' + encodeURIComponent(text))
         .then(r => showToast(r.ok ? 'Opened: ' + text : 'Server error ' + r.status))
-        .catch(() => showToast('Could not reach localhost:30142'));
     } else {
       navigator.clipboard.writeText('`' + text + '`')
         .then(() => showToast('Copied: ' + text))
