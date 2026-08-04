@@ -1,6 +1,7 @@
 ;;; goto-source.el --- Jump to JSX source from chrome-copy-dom selectors  -*- lexical-binding: t -*-
 
 (require 'consult)
+(require 'simple-httpd)
 
 (defcustom goto-source-executable "goto-source"
   "Path to the goto-source executable."
@@ -117,21 +118,20 @@
                     (current-kill 0 t)
                     (user-error "Clipboard is empty")))))
 
-(use-package simple-httpd)
-(require 'simple-httpd)
-(setq httpd-serve-files nil)
-(setq httpd-port 30142)
+;;;###autoload
+(defun goto-source-start-server ()
+  (interactive)
+  (setq httpd-serve-files nil)
+  (setq httpd-port 30142)
 
-(httpd-servlet* open-ref text/plain (ref)
-  (message "Finding source..")
-  (select-frame-set-input-focus (selected-frame))
-  (condition-case err
-      (goto-source--visit ref)
-    (error (message "goto-source: %s" (error-message-string err)))))
+  (httpd-servlet* open-ref text/plain (ref)
+    (message "Finding source..")
+    (select-frame-set-input-focus (selected-frame))
+    (condition-case err
+        (goto-source--visit ref)
+      (error (message "goto-source: %s" (error-message-string err)))))
 
-(httpd-start)
-
-(setq goto-source-project-directory "~/work/candid-website/")
+  (httpd-start))
 
 (provide 'goto-source)
 ;;; goto-source.el ends here
