@@ -85,7 +85,8 @@
 
 (defun goto-source--visit (selector)
   (setq goto-source--last-selector selector)
-  (let ((root (goto-source--root)))
+  (let ((root (goto-source--root))
+        (marker (point-marker)))
     (goto-source--run
      selector root
      (lambda (results)
@@ -94,6 +95,7 @@
          (let ((result (if (cdr results)
                            (goto-source--select results root)
                          (car results))))
+           (xref-push-marker-stack marker)
            (find-file (nth 1 result))
            (goto-char (point-min))
            (forward-line (1- (nth 2 result)))))))))
