@@ -40,6 +40,7 @@ Additionally, an utility to open the corresponding file in Emacs.
 ### How to use in Emacs
 
 Install the python utility: `uv tool install --editable goto-source`
+
 Load the package located in `goto-source/goto-source.el` and run `(goto-source-start-server)`.
 
 Hold alt while clicking the element to open the file in Emacs.
