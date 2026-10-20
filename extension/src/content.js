@@ -36,7 +36,7 @@
   function getElementPath(el) {
     const parts = [], els = [];
     let current = el;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 8; i++) {
       if (!current || current === document.body || current === document.documentElement) break;
       const tag = current.tagName.toLowerCase();
       const rawClass = current.classList[0] || '';
