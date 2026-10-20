@@ -81,7 +81,7 @@
   "Last selector visited, for `goto-source-repeat'.")
 
 (defun goto-source--visit (selector path-hint)
-  (setq goto-source--last-selector selector)
+  (setq goto-source--last-selector (cons selector path-hint))
   (let ((root (goto-source--root path-hint))
         (marker (point-marker)))
     (goto-source--run
@@ -101,8 +101,9 @@
 (defun goto-source-repeat ()
   "Re-run goto-source with the most recent selector."
   (interactive)
-  (goto-source--visit (or goto-source--last-selector
-                          (user-error "goto-source: no previous selector"))))
+  (unless goto-source--last-selector
+    (user-error "goto-source: no previous selector"))
+  (goto-source--visit (car goto-source--last-selector) (cdr goto-source--last-selector)))
 
 ;;;###autoload
 (defun goto-source-from-minibuffer ()
