@@ -7,16 +7,13 @@
   "Path to the goto-source executable."
   :type 'string)
 
-(defcustom goto-source-project-directory nil
-  "Path default project directory, using the current project if nil"
-  :type 'string)
-
-(defun goto-source--root ()
+(defun goto-source--root (path-hint)
   (expand-file-name
-   (or goto-source-project-directory
-       (if (and (fboundp 'project-current) (project-current))
-           (project-root (project-current))
-         default-directory))))
+   (let ((project (or (and path-hint (project-current nil (file-name-directory path-hint)))
+                      (project-current))))
+     (if project
+         (project-root project)
+       default-directory))))
 
 (defun goto-source--parse (output)
   "Parse CLI OUTPUT into a list of (ELEMENT FILE LINE) matches."
@@ -83,9 +80,9 @@
 (defvar goto-source--last-selector nil
   "Last selector visited, for `goto-source-repeat'.")
 
-(defun goto-source--visit (selector)
+(defun goto-source--visit (selector path-hint)
   (setq goto-source--last-selector selector)
-  (let ((root (goto-source--root))
+  (let ((root (goto-source--root path-hint))
         (marker (point-marker)))
     (goto-source--run
      selector root
@@ -126,11 +123,11 @@
   (setq httpd-serve-files nil)
   (setq httpd-port 30142)
 
-  (httpd-servlet* open-ref text/plain (ref)
+  (httpd-servlet* open-ref text/plain (ref path-hint)
     (message "Finding source..")
     (select-frame-set-input-focus (selected-frame))
     (condition-case err
-        (goto-source--visit ref)
+        (goto-source--visit ref path-hint)
       (error (message "goto-source: %s" (error-message-string err)))))
 
   (httpd-start))

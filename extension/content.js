@@ -136,15 +136,26 @@
     }).join(' > ');
   }
 
+  // --- Path hint from Vite dev server style tags ---
+  function getPathHint() {
+    const style = document.head.querySelector('style[data-vite-dev-id]');
+    return style ? style.getAttribute('data-vite-dev-id') : null;
+  }
+
   async function onClick(e) {
     e.preventDefault();
     e.stopPropagation();
     const { parts, els } = getElementPath(e.target);
     const components = await getReactComponents(els);
     const text = buildText(parts, components);
+    const pathHint = getPathHint();
     cleanup();
     if (e.metaKey) {
-      fetch('http://localhost:30142/open-ref?ref=' + encodeURIComponent(text))
+      let url = 'http://localhost:30142/open-ref?ref=' + encodeURIComponent(text);
+      if (pathHint) {
+        url += '&path-hint=' + encodeURIComponent(pathHint);
+      }
+      fetch(url)
         .then(r => showToast(r.ok ? 'Opened: ' + text : 'Server error ' + r.status))
     } else {
       navigator.clipboard.writeText('`' + text + '`')
