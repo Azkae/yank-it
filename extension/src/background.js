@@ -3,7 +3,7 @@ chrome.action.onClicked.addListener((tab) => {
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    files: ['content.js']
+    files: ['src/content.js']
   }).then(() => {
     chrome.action.setIcon({ path: { 128: 'icon-active.png' }, tabId: tab.id });
   });

@@ -155,8 +155,8 @@
       if (pathHint) {
         url += '&path-hint=' + encodeURIComponent(pathHint);
       }
-      fetch(url)
-        .then(r => showToast(r.ok ? 'Opened: ' + text : 'Server error ' + r.status))
+      fetch(url).catch(() => {})
+      showToast('Send to EDITOR')
     } else {
       navigator.clipboard.writeText('`' + text + '`')
         .then(() => showToast('Copied: ' + text))

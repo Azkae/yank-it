@@ -7,12 +7,12 @@
   "host_permissions": ["http://localhost:30142/*"],
   "action": {
     "default_icon": {
-      "128": "icon.png"
+      "128": "src/icon.png"
     },
     "default_title": "Pick an element to copy its selector"
   },
   "background": {
-    "service_worker": "background.js",
-    "scripts": ["background.js"]
+    "service_worker": "src/background.js",
+    "scripts": ["src/background.js"]
   }
 }
